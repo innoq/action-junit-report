@@ -40,8 +40,13 @@ export async function resolveFileAndLine(
 ): Promise<Position> {
   let fileName = file ? file : className.split('.').slice(-1)[0]
   try {
-    const escapedFileName = fileName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-    const matches = output.match(new RegExp(`${escapedFileName}.*?:\\d+`, 'g'))
+    const escapedFileName = fileName
+      .replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+      .replace('::', '/')
+
+    const matches = output.match(
+      new RegExp(` [^ ]*${escapedFileName}.*?:\\d+`, 'g')
+    )
     if (!matches) return {fileName, line: 1}
 
     const [lastItem] = matches.slice(-1)
