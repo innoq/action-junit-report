@@ -92,6 +92,7 @@ function run() {
             try {
                 const octokit = github.getOctokit(token);
                 yield octokit.rest.checks.create(createCheckRequest);
+                core.info(`request body: ${createCheckRequest.output}`);
                 if (failOnFailure && conclusion === 'failure') {
                     core.setFailed(`❌ Tests reported ${testResult.annotations.length} failures`);
                 }

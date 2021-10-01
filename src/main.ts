@@ -76,6 +76,8 @@ export async function run(): Promise<void> {
       const octokit = github.getOctokit(token)
       await octokit.rest.checks.create(createCheckRequest)
 
+      core.info(`request body: ${createCheckRequest.output}`)
+
       if (failOnFailure && conclusion === 'failure') {
         core.setFailed(
           `❌ Tests reported ${testResult.annotations.length} failures`
